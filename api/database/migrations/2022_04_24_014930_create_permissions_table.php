@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedTinyInteger('type');
-            $table->string('name', 64);
-            $table->text('description')->nullable();
+            $table->string('name')->unique();
+            $table->string('display_name')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
 
             $table->index('type');
