@@ -18,7 +18,14 @@ class Admin extends Model
 
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->belongsToMany(Permission::class)
+            ->where('type', Permission::TYPE_PERMISSION);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Permission::class)
+            ->where('type', Permission::TYPE_ROLE);
     }
 
     public function assign(Permission $permission)
