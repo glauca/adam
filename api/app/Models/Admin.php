@@ -2,19 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\AdminTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Admin extends Model
 {
+    use AdminTrait;
     use HasFactory;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['username', 'password'];
 
     public function permissions()
     {
@@ -26,29 +21,6 @@ class Admin extends Model
     {
         return $this->belongsToMany(Permission::class)
             ->where('type', Permission::TYPE_ROLE);
-    }
-
-    public function assign(Permission $permission)
-    {
-        $exists = $this->permissions()
-            ->where('permission_id', $permission->id)
-            ->exists();
-
-        if ($exists) {
-            return true;
-        }
-
-        return $this->permissions()->attach($permission);
-    }
-
-    public function revoke(Permission $permission)
-    {
-        return $this->permissions()->detach($permission);
-    }
-
-    public function revokeAll()
-    {
-        return $this->permissions()->detach();
     }
 
     public function getPermissionsByUser($userId)
